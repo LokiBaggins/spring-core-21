@@ -17,7 +17,7 @@ public interface EventService extends AbstractDomainObjectService<Event> {
      *            Name of the event
      * @return found event or <code>null</code>
      */
-    public @Nullable Event getByName(@Nonnull String name);
+    @Nullable Event getByName(@Nonnull String name);
 
     /*
      * Finding all events that air on specified date range
