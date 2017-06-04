@@ -66,6 +66,10 @@ public class User extends DomainObject {
             return false;
         }
         User other = (User) obj;
+        if(this.getId() != null && this.getId().equals(((User) obj).getId())) {
+            return true;
+        }
+
         if (email == null) {
             if (other.email != null) {
                 return false;
