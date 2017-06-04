@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/util
+                           http://www.springframework.org/schema/util/spring-util-2.5.xsd
+
+">
+    <bean id="userDaoTest" class="ua.epam.spring.hometask.dao.UserDaoTest"/>
+
+    <util:list id="userList1"  value-type="ua.epam.spring.hometask.domain.User">
+        <ref bean="user1"/>
+        <ref bean="user2"/>
+        <ref bean="user3"/>
+    </util:list>
+
+    <bean id="user1" class="ua.epam.spring.hometask.domain.User"
+          p:id="1"
+          p:email="user1@mail.com"
+    />
+    <bean id="user2" class="ua.epam.spring.hometask.domain.User"
+          p:id="2"
+          p:email="user2@mail.com"
+    />
+    <bean id="user3" class="ua.epam.spring.hometask.domain.User"
+          p:id="3"
+          p:email="user3@mail.com"
+    />
+
+</beans>
