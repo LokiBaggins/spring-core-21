@@ -7,10 +7,12 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="hometask-skeleton" />
+        <module name="spring-core-21" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="hometask-skeleton" target="1.8" />
+      <module name="spring-core-21" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
