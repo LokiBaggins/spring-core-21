@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a6c6d52c-50f2-423f-b1f3-010a8470f097" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-    </list>
+    <list default="true" id="a6c6d52c-50f2-423f-b1f3-010a8470f097" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/target/" />
     <ignored mask="*.iml" />
     <ignored path=".idea/" />
@@ -738,7 +736,7 @@
       <workItem from="1496590870901" duration="713000" />
       <workItem from="1496652987711" duration="1894000" />
       <workItem from="1496654907181" duration="152000" />
-      <workItem from="1496655079458" duration="293000" />
+      <workItem from="1496655079458" duration="323000" />
     </task>
     <task id="LOCAL-00001" summary="Project configured">
       <created>1496591369195</created>
@@ -761,11 +759,18 @@
       <option name="project" value="LOCAL" />
       <updated>1496655291512</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="some unrevertable changes in IDE workspace">
+      <created>1496655396717</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1496655396717</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="3052000" />
+    <option name="totallyTimeSpent" value="3082000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -861,7 +866,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Project configured" />
     <MESSAGE value="Untracked IDE files" />
-    <option name="LAST_COMMIT_MESSAGE" value="Untracked IDE files" />
+    <MESSAGE value="some unrevertable changes in IDE workspace" />
+    <option name="LAST_COMMIT_MESSAGE" value="some unrevertable changes in IDE workspace" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
