@@ -16,7 +16,12 @@ import ua.epam.spring.hometask.service.EventService;
  * Created by Aliaksei Miashkou on 12.06.17.
  */
 public class EventDaoImpl implements EventService {
-    private static Map<Long, Event> events = new HashMap<>();
+    private static Map<Long, Event> events;
+    private static Long eventIdAutoincrement = 1L;
+
+    public EventDaoImpl() {
+        events = new HashMap<>();
+    }
 
     @Override
     public Event getByName(final String name) {
@@ -52,8 +57,12 @@ public class EventDaoImpl implements EventService {
 
     @Override
     public Event save(@Nonnull final Event event) {
+        if (event.getId() == null) {
+            event.setId(eventIdAutoincrement++);
+        }
+//        TODO: add vaildation on e-mail uniqueness
         events.put(event.getId(), event);
-        return event;
+        return null;
     }
 
     @Override
