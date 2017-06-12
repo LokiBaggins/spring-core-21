@@ -21,13 +21,13 @@ import static org.junit.Assert.assertTrue;
 public class UserDaoTest {
 
     private static final ApplicationContext context = new ClassPathXmlApplicationContext("test-context.xml");
-    private UserDao userDao;
+    private UserDaoImpl userDao;
     Map<Long, User> fewUsersMap;
 
     @Before
     public void reset() {
-//        userDao = context.getBean("userDao", UserDao.class);
-        userDao = new UserDao();
+//        userDao = context.getBean("userDao", UserDaoImpl.class);
+        userDao = new UserDaoImpl();
         fewUsersMap = (Map<Long, User>) context.getBean("userMap1");
     }
 

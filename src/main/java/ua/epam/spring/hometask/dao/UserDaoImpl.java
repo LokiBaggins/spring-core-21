@@ -13,11 +13,11 @@ import ua.epam.spring.hometask.service.UserService;
 /**
  * Created by Aliaksei Miashkou on 04.06.17.
  */
-public class UserDao implements UserService {
+public class UserDaoImpl implements UserService {
     private static Map<Long, User> registeredUsers;
     private static Long userIdAutoincrement = 1L;
 
-    public UserDao() {
+    public UserDaoImpl() {
         registeredUsers = new HashMap<>();
     }
 
@@ -73,6 +73,6 @@ public class UserDao implements UserService {
 
 //    TODO: throw out this and use different pre-difined beans fot tests
     public static void setRegisteredUsers(Map<Long, User> registeredUsers) {
-        UserDao.registeredUsers = registeredUsers;
+        UserDaoImpl.registeredUsers = registeredUsers;
     }
 }
