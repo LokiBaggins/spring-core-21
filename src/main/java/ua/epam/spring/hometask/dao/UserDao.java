@@ -1,6 +1,7 @@
 package ua.epam.spring.hometask.dao;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
@@ -15,6 +16,10 @@ import ua.epam.spring.hometask.service.UserService;
 public class UserDao implements UserService {
     private static Map<Long, User> registeredUsers;
     private static Long userIdAutoincrement = 1L;
+
+    public UserDao() {
+        registeredUsers = new HashMap<>();
+    }
 
     @Override
     public User save(@Nonnull User object) {
