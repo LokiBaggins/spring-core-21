@@ -4,7 +4,7 @@ import java.util.Collection;
 
 import javax.annotation.Nonnull;
 
-import ua.epam.spring.hometask.dao.UserDao;
+import ua.epam.spring.hometask.dao.UserDaoImpl;
 import ua.epam.spring.hometask.domain.User;
 import ua.epam.spring.hometask.service.UserService;
 
@@ -12,7 +12,7 @@ import ua.epam.spring.hometask.service.UserService;
  * Created by Aliaksei Miashkou on 04.06.17.
  */
 public class UserServiceImpl implements UserService {
-    UserDao userDao;
+    UserDaoImpl userDao;
 
     @Override
     public User save(@Nonnull final User user) {
