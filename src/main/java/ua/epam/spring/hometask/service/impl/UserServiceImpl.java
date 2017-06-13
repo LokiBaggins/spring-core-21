@@ -3,8 +3,8 @@ package ua.epam.spring.hometask.service.impl;
 import java.util.Collection;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
+import ua.epam.spring.hometask.dao.UserDaoImpl;
 import ua.epam.spring.hometask.domain.User;
 import ua.epam.spring.hometask.service.UserService;
 
@@ -12,30 +12,31 @@ import ua.epam.spring.hometask.service.UserService;
  * Created by Aliaksei Miashkou on 04.06.17.
  */
 public class UserServiceImpl implements UserService {
-    @Nullable
+    UserDaoImpl userDao;
+
     @Override
-    public User getUserByEmail(@Nonnull String email) {
-        return null;
+    public User save(@Nonnull final User user) {
+        return userDao.save(user);
     }
 
     @Override
-    public User save(@Nonnull User object) {
-        return null;
+    public void remove(@Nonnull final User user) {
+        userDao.remove(user);
     }
 
     @Override
-    public void remove(@Nonnull User object) {
-
+    public User getById(@Nonnull final Long id) {
+        return userDao.getById(id);
     }
 
     @Override
-    public User getById(@Nonnull Long id) {
-        return null;
+    public User getUserByEmail(@Nonnull final String email) {
+        return userDao.getUserByEmail(email);
     }
 
+    @Override
     @Nonnull
-    @Override
     public Collection<User> getAll() {
-        return null;
+        return userDao.getAll();
     }
 }

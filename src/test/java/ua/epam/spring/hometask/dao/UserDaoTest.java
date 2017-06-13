@@ -2,28 +2,33 @@ package ua.epam.spring.hometask.dao;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import java.util.List;
+import java.util.Map;
 
 import ua.epam.spring.hometask.domain.User;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by Aliaksei Miashkou on 04.06.17.
  */
 public class UserDaoTest {
 
-    private ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("test-context.xml");
-    private UserDao userDao;
-    List<User> fewUsersList;
+    private static final ApplicationContext context = new ClassPathXmlApplicationContext("test-context.xml");
+    private UserDaoImpl userDao;
+    Map<Long, User> fewUsersMap;
 
     @Before
     public void reset() {
-        userDao = context.getBean("userDao", UserDao.class);
-        fewUsersList = (List<User>) context.getBean("userList1");
+//        userDao = context.getBean("userDao", UserDaoImpl.class);
+        userDao = new UserDaoImpl();
+        fewUsersMap = (Map<Long, User>) context.getBean("userMap1");
     }
 
     @Test
@@ -40,39 +45,39 @@ public class UserDaoTest {
     @Test
     public void remove() throws Exception {
 
-        userDao.setRegisteredUsers(fewUsersList);
-        int lenghtBefore = fewUsersList.size();
-        User removedUser = fewUsersList.get(0);
+        userDao.setRegisteredUsers(fewUsersMap);
+        int lenghtBefore = fewUsersMap.size();
+        User removedUser = fewUsersMap.get(1L); // TODO: too hard-wired solution for taking "any" element of Map
 
         userDao.remove(removedUser);
-//      we have no need for userDao.getRegistredUsers method, so comparison is based on idea that userDao keeps just link to fewUsersList object
-        assertEquals(lenghtBefore - 1, fewUsersList.size());
-        for (User user : fewUsersList) {
+//      we have no need for userDao.getRegistredUsers method, so comparison is based on idea that userDao keeps just link to fewUsersMap object
+        assertEquals(lenghtBefore - 1, fewUsersMap.size());
+        for (User user : fewUsersMap.values()) {
             assertNotEquals(user, removedUser);
         }
     }
 
     @Test
     public void getAll() throws Exception {
-        assertTrue(userDao.getAll().isEmpty());
+        assertTrue(userDao.getAll() == null || userDao.getAll().isEmpty());
 
-        userDao.setRegisteredUsers(fewUsersList);
-        assertEquals(fewUsersList.size(), userDao.getAll().size());
-        assertThat(fewUsersList, is(userDao.getAll()));
+        userDao.setRegisteredUsers(fewUsersMap);
+        assertEquals(fewUsersMap.size(), userDao.getAll().size());
+        assertThat(fewUsersMap.values(), is(userDao.getAll()));
     }
 
     @Test
     public void getById() throws Exception {
-        userDao.setRegisteredUsers(fewUsersList);
-        User userToFind = fewUsersList.get(fewUsersList.size() - 1);
+        userDao.setRegisteredUsers(fewUsersMap);
+        User userToFind = fewUsersMap.get(3L);
 
         assertEquals(userToFind, userDao.getById(userToFind.getId()));
     }
 
     @Test
     public void getUserByEmail() throws Exception {
-        userDao.setRegisteredUsers(fewUsersList);
-        User userToFind = fewUsersList.get(fewUsersList.size() - 1);
+        userDao.setRegisteredUsers(fewUsersMap);
+        User userToFind = fewUsersMap.get(3L);
 
         assertEquals(userToFind, userDao.getUserByEmail(userToFind.getEmail()));
     }

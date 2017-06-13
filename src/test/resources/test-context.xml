@@ -6,16 +6,18 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                            http://www.springframework.org/schema/beans/spring-beans.xsd
                            http://www.springframework.org/schema/util
-                           http://www.springframework.org/schema/util/spring-util-2.5.xsd
+                           http://www.springframework.org/schema/util/spring-util-2.5.xsd"
+   >
 
-">
-    <bean id="userDaoTest" class="ua.epam.spring.hometask.dao.UserDaoTest"/>
 
-    <util:list id="userList1"  value-type="ua.epam.spring.hometask.domain.User">
-        <ref bean="user1"/>
-        <ref bean="user2"/>
-        <ref bean="user3"/>
-    </util:list>
+
+    <bean id="userDao" class="ua.epam.spring.hometask.dao.UserDaoImpl"/>
+
+    <util:map id="userMap1" key-type="java.lang.Long" value-type="ua.epam.spring.hometask.domain.User">
+        <entry key="#{user1.id}" value-ref="user1"/>
+        <entry key="#{user2.id}" value-ref="user2"/>
+        <entry key="#{user3.id}" value-ref="user3"/>
+    </util:map>
 
     <bean id="user1" class="ua.epam.spring.hometask.domain.User"
           p:id="1"
