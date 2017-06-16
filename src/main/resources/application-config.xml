@@ -1,6 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+       xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
+    <context:property-placeholder location="classpath:auditoria.properties" />
+
+    <bean id="hall1" class="ua.epam.spring.hometask.domain.Auditorium"
+          p:name="${auditorium1.name}"
+          p:numberOfSeats="${auditorium1.number_of_seats}"
+          p:vipSeats="#{'${auditorium1.vip_seats}'.split(',')}"
+    />
+    <bean id="hall2" class="ua.epam.spring.hometask.domain.Auditorium"
+          p:name="${auditorium2.name}"
+          p:numberOfSeats="${auditorium2.number_of_seats}"
+          p:vipSeats="#{'${auditorium2.vip_seats}'.split(',')}"
+    />
+    <bean id="hall3" class="ua.epam.spring.hometask.domain.Auditorium"
+          p:name="${auditorium3.name}"
+          p:numberOfSeats="${auditorium3.number_of_seats}"
+          p:vipSeats="#{'${auditorium3.vip_seats}'.split(',')}"
+    />
 </beans>
