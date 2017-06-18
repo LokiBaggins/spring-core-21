@@ -17,7 +17,6 @@ public class TicketDaoImpl implements TicketDao {
     private static Map<Long, Ticket> tickets = new HashMap<>();
     private static Long ticketsAutoincrement = 1L;
 
-
     @Override
     public Set<Ticket> getByEvent(final Event event, final LocalDateTime dateTime) {
         Set<Ticket> set = new HashSet<>();

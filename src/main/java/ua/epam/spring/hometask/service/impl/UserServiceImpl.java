@@ -39,4 +39,9 @@ public class UserServiceImpl implements UserService {
     public Collection<User> getAll() {
         return userDao.getAll();
     }
+
+    @Override
+    public boolean isRegistered(@Nonnull User user) {
+        return userDao.isRegistered(user);
+    }
 }

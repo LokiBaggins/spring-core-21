@@ -17,7 +17,7 @@ public class Event extends DomainObject {
 
     private NavigableSet<LocalDateTime> airDates = new TreeSet<>();
 
-    private double basePrice;
+    private Double basePrice;
 
     private EventRating rating;
 
@@ -154,11 +154,11 @@ public class Event extends DomainObject {
         this.airDates = airDates;
     }
 
-    public double getBasePrice() {
+    public Double getBasePrice() {
         return basePrice;
     }
 
-    public void setBasePrice(double basePrice) {
+    public void setBasePrice(Double basePrice) {
         this.basePrice = basePrice;
     }
 
