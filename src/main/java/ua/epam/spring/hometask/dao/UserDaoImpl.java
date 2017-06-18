@@ -26,9 +26,9 @@ public class UserDaoImpl implements UserService {
         if (object.getId() == null) {
             object.setId(userIdAutoincrement++);
         }
-//        TODO: add vaildation on e-mail uniqueness
-        registeredUsers.put(object.getId(), object);
-        return null;
+
+        //        TODO: add vaildation on e-mail uniqueness
+        return registeredUsers.put(object.getId(), object);
     }
 
     @Override

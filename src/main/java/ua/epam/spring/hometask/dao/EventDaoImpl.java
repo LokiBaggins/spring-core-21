@@ -57,8 +57,7 @@ public class EventDaoImpl implements EventService {
             event.setId(eventIdAutoincrement++);
         }
 
-        events.put(event.getId(), event);
-        return null;
+        return events.put(event.getId(), event);
     }
 
     @Override
