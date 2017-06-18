@@ -28,8 +28,8 @@ public class EventServiceImpl implements EventService{
     }
 
     @Override
-    public Set<Event> getNextEvents(@Nonnull final LocalDateTime to) {
-        return eventDao.getNextEvents(to);
+    public Set<Event> getUpcomingEvents(@Nonnull final LocalDateTime to) {
+        return eventDao.getUpcomingEvents(to);
     }
 
     @Override
