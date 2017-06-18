@@ -10,7 +10,7 @@ import java.util.stream.LongStream;
 /**
  * @author Yuriy_Tkach
  */
-public class Auditorium {
+public class Auditorium extends DomainObject {
 
     private String name;
 
