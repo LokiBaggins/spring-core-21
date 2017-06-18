@@ -8,13 +8,9 @@ import java.util.TreeSet;
  * @author Yuriy_Tkach
  */
 public class User extends DomainObject {
-
     private String firstName;
-
     private String lastName;
-
     private String email;
-
     private NavigableSet<Ticket> tickets = new TreeSet<>();
 
     public String getFirstName() {

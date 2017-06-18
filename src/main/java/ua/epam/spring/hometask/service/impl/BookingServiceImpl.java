@@ -82,4 +82,20 @@ public class BookingServiceImpl implements BookingService {
 
         return 1.0;
     }
+
+    public TicketDao getTicketDao() {
+        return ticketDao;
+    }
+
+    public void setTicketDao(TicketDao ticketDao) {
+        this.ticketDao = ticketDao;
+    }
+
+    public UserService getUserService() {
+        return userService;
+    }
+
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
 }

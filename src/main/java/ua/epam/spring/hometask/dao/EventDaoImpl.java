@@ -40,9 +40,9 @@ public class EventDaoImpl implements EventService {
         for (final Event event : events.values()) {
             if(event.getAirDates().lower(to) != null && event.getAirDates().higher(from) != null) {
                 result.add(event);
-                break;
             }
         }
+
         return result;
     }
 

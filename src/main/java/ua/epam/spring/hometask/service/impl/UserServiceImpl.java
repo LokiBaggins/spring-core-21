@@ -12,7 +12,7 @@ import ua.epam.spring.hometask.service.UserService;
  * Created by Aliaksei Miashkou on 04.06.17.
  */
 public class UserServiceImpl implements UserService {
-    UserDaoImpl userDao;
+    private UserDaoImpl userDao;
 
     @Override
     public User save(@Nonnull final User user) {
@@ -43,5 +43,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean isRegistered(@Nonnull User user) {
         return userDao.isRegistered(user);
+    }
+
+    public UserDaoImpl getUserDao() {
+        return userDao;
+    }
+
+    public void setUserDao(UserDaoImpl userDao) {
+        this.userDao = userDao;
     }
 }

@@ -53,4 +53,11 @@ public class EventServiceImpl implements EventService{
         return eventDao.getAll();
     }
 
+    public EventDaoImpl getEventDao() {
+        return eventDao;
+    }
+
+    public void setEventDao(EventDaoImpl eventDao) {
+        this.eventDao = eventDao;
+    }
 }

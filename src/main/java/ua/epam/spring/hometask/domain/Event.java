@@ -13,15 +13,11 @@ import java.util.TreeSet;
  */
 public class Event extends DomainObject {
 
-    private String name;
-
     private NavigableSet<LocalDateTime> airDates = new TreeSet<>();
-
-    private Double basePrice;
-
-    private EventRating rating;
-
     private NavigableMap<LocalDateTime, Auditorium> auditoriums = new TreeMap<>();
+    private String name;
+    private Double basePrice;
+    private EventRating rating;
 
     /**
      * Checks if event is aired on particular <code>dateTime</code> and assigns
