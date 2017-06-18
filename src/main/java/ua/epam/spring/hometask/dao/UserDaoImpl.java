@@ -28,7 +28,8 @@ public class UserDaoImpl implements UserService {
         }
 
         //        TODO: add vaildation on e-mail uniqueness
-        return registeredUsers.put(object.getId(), object);
+        registeredUsers.put(object.getId(), object);
+        return registeredUsers.get(object.getId());
     }
 
     @Override
@@ -71,7 +72,12 @@ public class UserDaoImpl implements UserService {
         return null;
     }
 
-//    TODO: throw out this and use different pre-difined beans fot tests
+    @Override
+    public boolean isRegistered(@Nonnull User user) {
+        return registeredUsers.containsKey(user.getId());
+    }
+
+    //    TODO: throw out this and use different pre-difined beans fot tests
     public static void setRegisteredUsers(Map<Long, User> registeredUsers) {
         UserDaoImpl.registeredUsers = registeredUsers;
     }

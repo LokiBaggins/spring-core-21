@@ -42,7 +42,8 @@ public class AuditoriumDaoImpl implements AuditoriumService {
             auditorium.setId(auditoriaAutoincrement++);
         }
 
-        return auditoria.put(auditorium.getId(), auditorium);
+        auditoria.put(auditorium.getId(), auditorium);
+        return auditoria.get(auditorium.getId());
     }
 
     @Override

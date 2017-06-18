@@ -39,7 +39,8 @@ public class TicketDaoImpl implements TicketDao {
             ticket.setId(ticketsAutoincrement++);
         }
 
-        return tickets.put(ticket.getId(), ticket);
+        tickets.put(ticket.getId(), ticket);
+        return tickets.get(ticket.getId());
     }
 
     @Override
