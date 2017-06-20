@@ -4,7 +4,13 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+import java.util.Set;
+import java.util.TreeSet;
+
+import javax.annotation.Nonnull;
 
 import ua.epam.spring.hometask.domain.Auditorium;
 import ua.epam.spring.hometask.domain.Event;
@@ -12,8 +18,6 @@ import ua.epam.spring.hometask.domain.User;
 import ua.epam.spring.hometask.service.BookingService;
 import ua.epam.spring.hometask.service.EventService;
 import ua.epam.spring.hometask.service.UserService;
-
-import javax.annotation.Nonnull;
 
 public class ApplicationLauncher {
     private static ApplicationContext context = new ClassPathXmlApplicationContext("service-config.xml");
@@ -61,7 +65,7 @@ public class ApplicationLauncher {
         User registeredUser = context.getBean("registeredUser", User.class);
         System.out.println("Saving initial user...");
         userService.save(registeredUser);
-        System.out.println(String.format("Initial user '%s %s' saved successfully!", registeredUser.getFirstName(), registeredUser.getLastName()));
+        System.out.println(String.format("Initial user '%s %s' saved successfully! Email: %s", registeredUser.getFirstName(), registeredUser.getLastName(), registeredUser.getEmail()));
     }
 
     private void initEventDao() {
@@ -80,7 +84,7 @@ public class ApplicationLauncher {
     private void run() {
         System.out.println("\nLet's start booking!");
 
-        List<Event> upcomingEvents = new ArrayList<>(eventService.getUpcomingEvents(LocalDateTime.now().plusDays(7)));
+        List<Event> upcomingEvents = new ArrayList<>(eventService.getUpcomingEvents(LocalDateTime.now().plusDays(10)));
 
         System.out.println("Choose the movie to watch:");
         int i = 1;
@@ -96,9 +100,9 @@ public class ApplicationLauncher {
         System.out.println("Rating: " + chosenEvent.getRating());
         List<LocalDateTime> airDates = new ArrayList<>(chosenEvent.getAirDates());
 
-        for (int j = 0; j < airDates.size() - 1; j++) {
+        for (int j = 1; j <= airDates.size(); j++) {
             //            TODO: format dateTime
-            System.out.println(j + 1 + ". " + airDates.get(j));
+            System.out.println(j + ". " + airDates.get(j-1));
         }
 
         // show available seats
@@ -115,16 +119,68 @@ public class ApplicationLauncher {
         availableSeats.removeAll(reservedSeats);
         availableSeats.removeAll(availableVipSeats);
 
-        printSeats(availableSeats, bookingService.getTicketPrice(chosenEvent, chosenAirDate, availableSeats.stream().findFirst().get()));
-        printSeats(availableVipSeats, bookingService.getTicketPrice(chosenEvent, chosenAirDate, availableVipSeats.stream().findFirst().get()));
+        printSeats(availableSeats, bookingService.getTicketPrice(chosenEvent, chosenAirDate, availableSeats.stream().findFirst().get()), false);
+        printSeats(availableVipSeats, bookingService.getTicketPrice(chosenEvent, chosenAirDate, availableVipSeats.stream().findFirst().get()), true);
 
+//        choose seats
+        Set<Long> chosenSeats = readInputSeatsNumbers(availableSeats, availableVipSeats);
+        Double totalCost = bookingService.getTicketsTotalPrice(chosenEvent, chosenAirDate, chosenSeats);
+        System.out.println(String.format("You have chosen %s seats.\nTotal cost is: %s", new Object[]{chosenSeats.size(), totalCost}));
+
+//        logging in
+//        System.out.println("Have a profile?\nEnter email if registered (see init logs) or just skip this step if not:");
+//        String inputEmail = scanner.nextLine();
+//        User currentUser = null;
+//        if (inputEmail != null && !inputEmail.isEmpty()) {
+//            currentUser = userService.getUserByEmail(inputEmail);
+//        }
+
+
+    }
+
+    private Set<Long> readInputSeatsNumbers(Set<Long> availableSeats, Set<Long> availableVipSeats) {
+        Set<Long> allAvailableSeats = new TreeSet<>();
+        allAvailableSeats.addAll(availableSeats);
+        allAvailableSeats.addAll(availableVipSeats);
+
+        return readInputSeatsNumbers(allAvailableSeats);
+    }
+
+    private Set<Long> readInputSeatsNumbers(Set<Long> allAvailableSeats) {
+        System.out.println("\n(enter seat number(s))");
+        Set<Long> result = new TreeSet<>();
+
+        String inputRow = scanner.nextLine();
+
+        for (String seatNumber : inputRow.split("[, ]")) {
+            if (!isInputSeatValid(seatNumber, allAvailableSeats)) {
+                System.out.println(String.format("Wrong seat number '%s'. Possible reasons: no such seat in auditorium; the seat is already reserved or there is a mistape occured.", seatNumber));
+                System.out.println("Try again or enter '-1' to exit.");
+                readInputSeatsNumbers(allAvailableSeats);
+            }
+
+            result.add(Long.parseLong(seatNumber));
+        }
+
+        return result;
+    }
+
+    private boolean isInputSeatValid(String seatNumber, Set<Long> allAvailableSeats) {
+        Long seat;
+        try {
+            seat = Long.parseLong(seatNumber);
+        } catch (NumberFormatException e) {
+            return false;
+        }
+
+        return allAvailableSeats.contains(seat);
     }
 
     private int readInputNumber(int maxValue, String errorMessage) {
         System.out.println("\n(enter the number)");
 
-
         int input = scanner.nextInt();
+        scanner.nextLine();
         if (input == -1) {
             System.out.println("Good buy!");
             System.exit(0);
@@ -140,12 +196,19 @@ public class ApplicationLauncher {
         return input;
     }
 
-    private void printSeats(@Nonnull Set<Long> seats, Double seatPrice) {
+    private User loginUser() {
+
+
+        return null;
+    }
+
+    private void printSeats(@Nonnull Set<Long> seats, Double seatPrice, boolean isVip) {
         if (seats.isEmpty()) {
             return;
         }
 
-        System.out.println("Seat price: " + seatPrice);
+        String title = isVip ? "Seat price: " + seatPrice : "VIP Seat price: " + seatPrice;
+        System.out.println(title);
         System.out.print("|| ");
         for (Long seat : seats) {
             System.out.print(seat + " ");
