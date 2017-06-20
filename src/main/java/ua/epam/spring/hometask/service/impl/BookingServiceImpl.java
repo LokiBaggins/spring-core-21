@@ -2,6 +2,7 @@ package ua.epam.spring.hometask.service.impl;
 
 import java.time.LocalDateTime;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
@@ -24,14 +25,20 @@ public class BookingServiceImpl implements BookingService {
     private UserService userService;
 
     @Override
-    public Double getTicketsTotalPrice(final Event event, final LocalDateTime dateTime, final User user, final Set<Long> seats) {
+    public Double getTicketsTotalPrice(final Event event, final LocalDateTime dateTime, final Set<Long> seats) {
         Double totalPrice = 0.00;
 
         for (Long seat : seats) {
-            totalPrice += getTicketPrice(event, dateTime, user, seat);
+            totalPrice += getTicketPrice(event, dateTime, seat);
         }
 
         return totalPrice;
+    }
+
+    @Nonnull
+    @Override
+    public Double getTicketPrice(Event event, LocalDateTime dateTime, Long seat) {
+        return event.getBasePrice() * getEventRatingChargeMultiplier(event) * getVipSeatPriceMultiplier(event, dateTime, seat);
     }
 
     @Override
@@ -45,12 +52,12 @@ public class BookingServiceImpl implements BookingService {
     public Set<Ticket> getPurchasedTicketsForEvent(final Event event, final LocalDateTime date) {
         return ticketDao.getByEvent(event, date);
     }
-    
-    @Nonnull
-    private Double getTicketPrice(Event event, LocalDateTime dateTime, User user, Long seat) {
-        return event.getBasePrice() * getEventRatingChargeMultiplier(event) * getVipSeatPriceMultiplier(event, dateTime, seat);
+
+    @Override
+    public Set<Long> getReservedSeatsForEvent(@Nonnull Event event, @Nonnull LocalDateTime dateTime) {
+        return getPurchasedTicketsForEvent(event, dateTime).stream().map(Ticket::getSeat).collect(Collectors.toSet());
     }
-    
+
     private Ticket bookTicket(Ticket ticket) {
         if (ticketDao.isTicketBooked(ticket)) {
             throw new RuntimeException("Unable to book ticket. Ticket already booked.");
@@ -66,22 +73,26 @@ public class BookingServiceImpl implements BookingService {
     }
 
     private Double getEventRatingChargeMultiplier(Event event) {
-        switch(event.getRating()) {
-            case LOW: return RATING_PRICE_MULTIPLIER_LOW;
-            case MID: return RATING_PRICE_MULTIPLIER_MID;
-            case HIGH: return RATING_PRICE_MULTIPLIER_HIGH;
+        switch (event.getRating()) {
+            case LOW:
+                return RATING_PRICE_MULTIPLIER_LOW;
+            case MID:
+                return RATING_PRICE_MULTIPLIER_MID;
+            case HIGH:
+                return RATING_PRICE_MULTIPLIER_HIGH;
         }
 
         return RATING_PRICE_MULTIPLIER_BASE;
     }
 
-    private Double getVipSeatPriceMultiplier(Event event,  LocalDateTime dateTime, Long seat) {
+    private Double getVipSeatPriceMultiplier(Event event, LocalDateTime dateTime, Long seat) {
         if (!event.getAuditoriums().isEmpty() && event.getAuditoriums().get(dateTime).getVipSeats().contains(seat)) {
             return VIP_SEAT_PRICE_MULTIPLIER;
         }
 
         return 1.0;
     }
+
 
     public TicketDao getTicketDao() {
         return ticketDao;

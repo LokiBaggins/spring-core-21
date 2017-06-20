@@ -17,7 +17,7 @@ public interface BookingService {
 
     /**
      * Getting price when buying all supplied seats for particular event
-     * 
+     *
      * @param event
      *            Event to get base ticket price, vip seats and other
      *            information
@@ -30,12 +30,13 @@ public interface BookingService {
      *            Set of seat numbers that user wants to buy
      * @return total price
      */
-    Double getTicketsTotalPrice(@Nonnull Event event, @Nonnull LocalDateTime dateTime, @Nullable User user, @Nonnull Set<Long> seats);
+    Double getTicketsTotalPrice(@Nonnull Event event, @Nonnull LocalDateTime dateTime, @Nonnull Set<Long> seats);
+    Double getTicketPrice(@Nonnull Event event, @Nonnull LocalDateTime dateTime, @Nonnull Long seat);
 
     /**
      * Books tickets in internal system. If user is not
      * <code>null</code> in a ticket then booked tickets are saved with it
-     * 
+     *
      * @param tickets
      *            Set of tickets
      */
@@ -43,7 +44,7 @@ public interface BookingService {
 
     /**
      * Getting all purchased tickets for event on specific air date and time
-     * 
+     *
      * @param event
      *            Event to get tickets for
      * @param dateTime
@@ -51,5 +52,7 @@ public interface BookingService {
      * @return set of all purchased tickets
      */
     @Nonnull Set<Ticket> getPurchasedTicketsForEvent(@Nonnull Event event, @Nonnull LocalDateTime dateTime);
+
+    Set<Long> getReservedSeatsForEvent(@Nonnull Event event, @Nonnull LocalDateTime dateTime);
 
 }
