@@ -9,7 +9,6 @@ import javax.annotation.Nonnull;
 import ua.epam.spring.hometask.dao.TicketDao;
 import ua.epam.spring.hometask.domain.Event;
 import ua.epam.spring.hometask.domain.Ticket;
-import ua.epam.spring.hometask.domain.User;
 import ua.epam.spring.hometask.service.BookingService;
 import ua.epam.spring.hometask.service.UserService;
 
@@ -65,7 +64,7 @@ public class BookingServiceImpl implements BookingService {
 
         Ticket result = ticketDao.save(ticket);
 
-        if (result != null && userService.isRegistered(ticket.getUser())) {
+        if (result != null && ticket.getUser() != null && userService.isRegistered(ticket.getUser())) {
             ticket.getUser().getTickets().add(result);
         }
 

@@ -5,15 +5,18 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
 import ua.epam.spring.hometask.domain.Auditorium;
 import ua.epam.spring.hometask.domain.Event;
+import ua.epam.spring.hometask.domain.Ticket;
 import ua.epam.spring.hometask.domain.User;
 import ua.epam.spring.hometask.service.BookingService;
 import ua.epam.spring.hometask.service.EventService;
@@ -128,14 +131,39 @@ public class ApplicationLauncher {
         System.out.println(String.format("You have chosen %s seats.\nTotal cost is: %s", new Object[]{chosenSeats.size(), totalCost}));
 
 //        logging in
-//        System.out.println("Have a profile?\nEnter email if registered (see init logs) or just skip this step if not:");
-//        String inputEmail = scanner.nextLine();
-//        User currentUser = null;
-//        if (inputEmail != null && !inputEmail.isEmpty()) {
-//            currentUser = userService.getUserByEmail(inputEmail);
-//        }
+        System.out.println("\nHave a profile?\nEnter email if registered (see init logs) or just skip this step if not:");
+        String inputEmail = scanner.nextLine();
+        User currentUser = null;
+        if (inputEmail != null && !inputEmail.isEmpty()) {
+            currentUser = userService.getUserByEmail(inputEmail);
 
+            if (currentUser != null) {
+                System.out.println(String.format("\nGlad to see you again, %s %s!", currentUser.getFirstName(), currentUser.getLastName()));
+            } else {
+                System.out.println(String.format("\nWe can't find user with email '%s'. Weloome, mr. Anonymous!", inputEmail));
+            }
+        }
 
+//        purchasing tickets
+        Set<Ticket> ticketsToBuy = new HashSet<>();
+        for (Long seat : chosenSeats) {
+            ticketsToBuy.add(new Ticket(currentUser, chosenEvent, chosenAirDate, seat));
+        }
+        bookingService.bookTickets(ticketsToBuy);
+
+//        check and confirm success transaction result
+        Set<Ticket> allBookedTickets = bookingService.getPurchasedTicketsForEvent(chosenEvent, chosenAirDate);
+        Set<Long> ticketsToBuyIDs = ticketsToBuy.stream()
+                .map(Ticket::getId)
+                .collect(Collectors.toSet());
+
+        System.out.println("You have booked next tickets:");
+        for (Ticket bookedTicket : allBookedTickets) {
+            if (ticketsToBuyIDs.contains(bookedTicket.getId())) {
+                System.out.println("\t" + bookedTicket.toString());
+            }
+        }
+        System.out.println();
     }
 
     private Set<Long> readInputSeatsNumbers(Set<Long> availableSeats, Set<Long> availableVipSeats) {
