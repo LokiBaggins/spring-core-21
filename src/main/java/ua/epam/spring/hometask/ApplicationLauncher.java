@@ -5,6 +5,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
@@ -34,7 +35,7 @@ public class ApplicationLauncher {
         ApplicationLauncher launcher = context.getBean("launcher", ApplicationLauncher.class);
         launcher.initUserDao();
         launcher.initEventDao();
-        launcher.run();
+        launcher.run(1, 2, new HashSet<>(Arrays.asList(3L, 5L, 7L)), "some.user@anymail.com");
 
         scanner.close();
     }
@@ -84,7 +85,7 @@ public class ApplicationLauncher {
 
     }
 
-    private void run() {
+    private void run(Integer eventNumber, Integer airDateNumber, Set<Long> seatsNumbers, String userEmail) {
         System.out.println("\nLet's start booking!");
 
         List<Event> upcomingEvents = new ArrayList<>(eventService.getUpcomingEvents(LocalDateTime.now().plusDays(10)));
@@ -97,8 +98,14 @@ public class ApplicationLauncher {
 
 
         //        show available airDates for chosen event
-        int chosenEventNumber = readInputNumber(upcomingEvents.size(), "There is no movie in list with number %d");
-        Event chosenEvent = upcomingEvents.get(chosenEventNumber - 1);
+        if (eventNumber != null) {
+            System.out.println(String.format("PREDEFINED event number is '%s' (%s)", eventNumber, upcomingEvents.get(eventNumber - 1).getName()));
+        } else {
+            eventNumber = readInputNumber(upcomingEvents.size(), "There is no movie in list with number %d");
+        }
+
+        Event chosenEvent = eventService.getByName(upcomingEvents.get(eventNumber - 1).getName()); // it's not racianal, but needed for AOP to count calls
+        System.out.println();
         System.out.println(chosenEvent.getName());
         System.out.println("Rating: " + chosenEvent.getRating());
         List<LocalDateTime> airDates = new ArrayList<>(chosenEvent.getAirDates());
@@ -109,8 +116,13 @@ public class ApplicationLauncher {
         }
 
         // show available seats
-        int chosenAirDateNumber = readInputNumber(airDates.size(), "There is no air on %s");
-        LocalDateTime chosenAirDate = airDates.get(chosenAirDateNumber - 1);
+        if (airDateNumber != null) {
+            System.out.println(String.format("PREDEFINED air date is '%s' (%s)", airDateNumber, airDates.get(airDateNumber - 1)));
+        } else {
+            airDateNumber = readInputNumber(airDates.size(), "There is no air on %s");
+        }
+
+        LocalDateTime chosenAirDate = airDates.get(airDateNumber - 1);
         Auditorium airHall = chosenEvent.getAuditoriums().get(chosenAirDate);
 
         Set<Long> reservedSeats = bookingService.getReservedSeatsForEvent(chosenEvent, chosenAirDate);
@@ -122,31 +134,43 @@ public class ApplicationLauncher {
         availableSeats.removeAll(reservedSeats);
         availableSeats.removeAll(availableVipSeats);
 
+        System.out.println();
         printSeats(availableSeats, bookingService.getTicketPrice(chosenEvent, chosenAirDate, availableSeats.stream().findFirst().get()), false);
         printSeats(availableVipSeats, bookingService.getTicketPrice(chosenEvent, chosenAirDate, availableVipSeats.stream().findFirst().get()), true);
 
 //        choose seats
-        Set<Long> chosenSeats = readInputSeatsNumbers(availableSeats, availableVipSeats);
-        Double totalCost = bookingService.getTicketsTotalPrice(chosenEvent, chosenAirDate, chosenSeats);
-        System.out.println(String.format("You have chosen %s seats.\nTotal cost is: %s", new Object[]{chosenSeats.size(), totalCost}));
+        if (seatsNumbers != null) {
+            System.out.println(String.format("PREDEFINED seta numbers are: %s.", Arrays.toString(seatsNumbers.toArray())));
+        } else {
+            seatsNumbers = readInputSeatsNumbers(availableSeats, availableVipSeats);
+        }
+
+        Double totalCost = bookingService.getTicketsTotalPrice(chosenEvent, chosenAirDate, seatsNumbers);
+        System.out.println(String.format("You have chosen %s seats.\nTotal cost is: %s", new Object[]{seatsNumbers.size(), totalCost}));
 
 //        logging in
         System.out.println("\nHave a profile?\nEnter email if registered (see init logs) or just skip this step if not:");
-        String inputEmail = scanner.nextLine();
+
+        if (userEmail != null && !userEmail.isEmpty()) {
+            System.out.println(String.format("PREDEFINED user email is: '%s'.", userEmail));
+        } else {
+            userEmail = scanner.nextLine();
+        }
+
         User currentUser = null;
-        if (inputEmail != null && !inputEmail.isEmpty()) {
-            currentUser = userService.getUserByEmail(inputEmail);
+        if (userEmail != null && !userEmail.isEmpty()) {
+            currentUser = userService.getUserByEmail(userEmail);
 
             if (currentUser != null) {
                 System.out.println(String.format("\nGlad to see you again, %s %s!", currentUser.getFirstName(), currentUser.getLastName()));
             } else {
-                System.out.println(String.format("\nWe can't find user with email '%s'. Weloome, mr. Anonymous!", inputEmail));
+                System.out.println(String.format("\nWe can't find user with email '%s'. Weloome, mr. Anonymous!", userEmail));
             }
         }
 
 //        purchasing tickets
         Set<Ticket> ticketsToBuy = new HashSet<>();
-        for (Long seat : chosenSeats) {
+        for (Long seat : seatsNumbers) {
             ticketsToBuy.add(new Ticket(currentUser, chosenEvent, chosenAirDate, seat));
         }
         bookingService.bookTickets(ticketsToBuy);
