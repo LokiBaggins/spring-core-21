@@ -1,5 +1,8 @@
 package ua.epam.spring.hometask.service.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -12,6 +15,7 @@ import ua.epam.spring.hometask.domain.Ticket;
 import ua.epam.spring.hometask.service.BookingService;
 import ua.epam.spring.hometask.service.UserService;
 
+@Service("bookingService")
 public class BookingServiceImpl implements BookingService {
     //        TODO: move consts to .properties
     private static final Double VIP_SEAT_PRICE_MULTIPLIER = 1.5;
@@ -20,8 +24,8 @@ public class BookingServiceImpl implements BookingService {
     private static final Double RATING_PRICE_MULTIPLIER_MID = 1.0;
     private static final Double RATING_PRICE_MULTIPLIER_HIGH = 1.2;
 
-    private TicketDao ticketDao;
-    private UserService userService;
+    @Autowired private TicketDao ticketDao;
+    @Autowired private UserService userService;
 
     @Override
     public Double getTicketsTotalPrice(final Event event, final LocalDateTime dateTime, final Set<Long> seats) {

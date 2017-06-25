@@ -1,6 +1,8 @@
 package ua.epam.spring.hometask;
 
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.time.LocalDateTime;
@@ -15,6 +17,7 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
+import ua.epam.spring.hometask.config.ApplicationConfig;
 import ua.epam.spring.hometask.domain.Auditorium;
 import ua.epam.spring.hometask.domain.Event;
 import ua.epam.spring.hometask.domain.Ticket;
@@ -24,22 +27,26 @@ import ua.epam.spring.hometask.service.EventService;
 import ua.epam.spring.hometask.service.UserService;
 
 public class ApplicationLauncher {
-    private static ApplicationContext context = new ClassPathXmlApplicationContext("service-config.xml");
     private static Scanner scanner = new Scanner(System.in);
     UserService userService;
     BookingService bookingService;
     EventService eventService;
 
 
+
     public static void main(String[] args) {
-        ApplicationLauncher launcher = context.getBean("launcher", ApplicationLauncher.class);
-        launcher.initUserDao();
-        launcher.initEventDao();
+        ConfigurableApplicationContext contextXML = new ClassPathXmlApplicationContext("service-config.xml");
+        ConfigurableApplicationContext contextAnt = new AnnotationConfigApplicationContext(ApplicationConfig.class);
+
+
+        ApplicationLauncher launcher = contextXML.getBean(ApplicationLauncher.class);
+        launcher.initUserDao(contextAnt);
+        launcher.initEventDao(contextXML);
+
         launcher.run(1, 2, new HashSet<>(Arrays.asList(3L, 5L, 7L)), "some.user@anymail.com");
 
         scanner.close();
     }
-
 
     public UserService getUserService() {
         return userService;
@@ -65,14 +72,14 @@ public class ApplicationLauncher {
         this.eventService = eventService;
     }
 
-    private void initUserDao() {
+    private void initUserDao(ConfigurableApplicationContext context ) {
         User registeredUser = context.getBean("registeredUser", User.class);
         System.out.println("Saving initial user...");
         userService.save(registeredUser);
         System.out.println(String.format("Initial user '%s %s' saved successfully! Email: %s", registeredUser.getFirstName(), registeredUser.getLastName(), registeredUser.getEmail()));
     }
 
-    private void initEventDao() {
+    private void initEventDao(ConfigurableApplicationContext context) {
         System.out.println("\nSaving initial events...");
         Event event1 = context.getBean("event1", Event.class);
         Event event2 = context.getBean("event2", Event.class);

@@ -1,4 +1,4 @@
-package ua.epam.spring.hometask.dao;
+package ua.epam.spring.hometask.dao.impl;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -9,6 +9,7 @@ import java.util.Set;
 
 import javax.annotation.Nonnull;
 
+import ua.epam.spring.hometask.dao.TicketDao;
 import ua.epam.spring.hometask.domain.Event;
 import ua.epam.spring.hometask.domain.Ticket;
 

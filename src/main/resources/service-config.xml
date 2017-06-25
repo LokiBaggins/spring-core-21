@@ -6,7 +6,7 @@
        xmlns:aop="http://www.springframework.org/schema/aop"
        xmlns:util="http://www.springframework.org/schema/util"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-            http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
             http://www.springframework.org/schema/context
             http://www.springframework.org/schema/context/spring-context.xsd
             http://www.springframework.org/schema/util
@@ -16,36 +16,16 @@
 
 
 ">
-
-    <aop:aspectj-autoproxy />
     <import resource="classpath:events-context.xml"/>
+    <bean class="ua.epam.spring.hometask.config.ApplicationConfig"/>
+
+    <context:annotation-config/>
+    <context:component-scan base-package="ua.epam.spring.hometask" />
 
     <bean id="launcher" class="ua.epam.spring.hometask.ApplicationLauncher"
           p:userService-ref="userService"
           p:eventService-ref="eventService"
           p:bookingService-ref="bookingService"
-    />
-
-
-    <bean id="eventService" class="ua.epam.spring.hometask.service.impl.EventServiceImpl"
-          p:eventDao-ref="eventDao"
-    />
-    <bean id="bookingService" class="ua.epam.spring.hometask.service.impl.BookingServiceImpl"
-          p:ticketDao-ref="ticketDao"
-          p:userService-ref="userService"
-    />
-    <bean id="userService" class="ua.epam.spring.hometask.service.impl.UserServiceImpl"
-          p:userDao-ref="userDao"
-    />
-
-    <bean id="eventDao" class="ua.epam.spring.hometask.dao.EventDaoImpl"/>
-    <bean id="ticketDao" class="ua.epam.spring.hometask.dao.TicketDaoImpl"/>
-    <bean id="userDao" class="ua.epam.spring.hometask.dao.UserDaoImpl"/>
-
-    <bean id="registeredUser" class="ua.epam.spring.hometask.domain.User"
-          p:firstName="Bilbo"
-          p:lastName="Baggins"
-          p:email="bilbo.baggins@email.com"
     />
 
     <util:map id="eventsMap1" key-type="java.lang.Long" value-type="ua.epam.spring.hometask.domain.Event" map-class="java.util.HashMap">

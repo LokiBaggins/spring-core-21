@@ -1,4 +1,7 @@
-package ua.epam.spring.hometask.dao;
+package ua.epam.spring.hometask.dao.impl;
+
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -8,19 +11,15 @@ import java.util.Set;
 
 import javax.annotation.Nonnull;
 
+import ua.epam.spring.hometask.dao.EventDao;
 import ua.epam.spring.hometask.domain.Event;
 import ua.epam.spring.hometask.service.EventService;
 
-/**
- * Created by Aliaksei Miashkou on 12.06.17.
- */
-public class EventDaoImpl implements EventService {
-    private static Map<Long, Event> events;
+//@Service("eventService")
+@Component
+public class EventDaoImpl implements EventDao {
+    private static Map<Long, Event> events = new HashMap<>();
     private static Long eventIdAutoincrement = 1L;
-
-    public EventDaoImpl() {
-        events = new HashMap<>();
-    }
 
     @Override
     public Event getByName(@Nonnull final String name) {

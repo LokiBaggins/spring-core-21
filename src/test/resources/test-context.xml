@@ -11,7 +11,7 @@
 
 
 
-    <bean id="userDao" class="ua.epam.spring.hometask.dao.UserDaoImpl"/>
+    <bean id="userDao" class="ua.epam.spring.hometask.dao.impl.UserDaoImpl"/>
 
     <util:map id="userMap1" key-type="java.lang.Long" value-type="ua.epam.spring.hometask.domain.User">
         <entry key="#{user1.id}" value-ref="user1"/>

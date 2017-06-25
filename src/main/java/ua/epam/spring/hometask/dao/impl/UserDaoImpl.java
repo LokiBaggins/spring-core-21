@@ -1,4 +1,4 @@
-package ua.epam.spring.hometask.dao;
+package ua.epam.spring.hometask.dao.impl;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -7,13 +7,14 @@ import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import ua.epam.spring.hometask.dao.UserDao;
 import ua.epam.spring.hometask.domain.User;
 import ua.epam.spring.hometask.service.UserService;
 
 /**
  * Created by Aliaksei Miashkou on 04.06.17.
  */
-public class UserDaoImpl implements UserService {
+public class UserDaoImpl implements UserDao {
     private static Map<Long, User> registeredUsers;
     private static Long userIdAutoincrement = 1L;
 

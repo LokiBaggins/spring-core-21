@@ -1,6 +1,4 @@
-package ua.epam.spring.hometask.dao;
-
-import org.springframework.stereotype.Component;
+package ua.epam.spring.hometask.dao.impl;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -10,12 +8,12 @@ import java.util.Set;
 
 import javax.annotation.Nonnull;
 
+import ua.epam.spring.hometask.dao.AuditoriumDao;
 import ua.epam.spring.hometask.domain.Auditorium;
 import ua.epam.spring.hometask.service.AuditoriumService;
 
 
-@Component
-public class AuditoriumDaoImpl implements AuditoriumService {
+public class AuditoriumDaoImpl implements AuditoriumDao {
     private static Map<Long, Auditorium> auditoria = new HashMap<>();
     private static Long auditoriaAutoincrement = 1L;
 
@@ -64,6 +62,7 @@ public class AuditoriumDaoImpl implements AuditoriumService {
         return auditoria.get(id);
     }
 
+    @Override
     public void setAll(final Set<Auditorium> auditoriumSet) {
         auditoriumSet.forEach(this::save);
     }

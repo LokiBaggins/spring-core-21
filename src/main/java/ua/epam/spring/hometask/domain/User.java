@@ -11,7 +11,22 @@ public class User extends DomainObject {
     private String firstName;
     private String lastName;
     private String email;
-    private NavigableSet<Ticket> tickets = new TreeSet<>();
+    private NavigableSet<Ticket> tickets;
+
+    public User() {
+        this(null, null, null, new TreeSet<>());
+    }
+
+    public User(String firstName, String lastName, String email) {
+       this(firstName, lastName, email, new TreeSet<>());
+    }
+
+    public User(String firstName, String lastName, String email, NavigableSet<Ticket> tickets) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.tickets = tickets;
+    }
 
     public String getFirstName() {
         return firstName;

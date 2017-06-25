@@ -1,19 +1,26 @@
 package ua.epam.spring.hometask.service.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.util.Collection;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
 
-import ua.epam.spring.hometask.dao.AuditoriumDaoImpl;
+import ua.epam.spring.hometask.dao.AuditoriumDao;
+import ua.epam.spring.hometask.dao.impl.AuditoriumDaoImpl;
 import ua.epam.spring.hometask.domain.Auditorium;
 import ua.epam.spring.hometask.service.AuditoriumService;
 
-/**
- * Created by Aliaksei Miashkou on 18.06.17.
- */
+@Service("auditoriumService")
 public class AuditoriumServiceImpl implements AuditoriumService {
-    private AuditoriumDaoImpl auditoriumDao;
+
+    @Autowired
+    private AuditoriumDao auditoriumDao;
+
+    public AuditoriumServiceImpl() {
+    }
 
     public AuditoriumServiceImpl(final AuditoriumDaoImpl auditoriumDao) {
         this.auditoriumDao = auditoriumDao;

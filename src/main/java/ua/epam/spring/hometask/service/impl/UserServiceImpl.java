@@ -1,18 +1,22 @@
 package ua.epam.spring.hometask.service.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.util.Collection;
 
 import javax.annotation.Nonnull;
 
-import ua.epam.spring.hometask.dao.UserDaoImpl;
+import ua.epam.spring.hometask.dao.UserDao;
+import ua.epam.spring.hometask.dao.impl.UserDaoImpl;
 import ua.epam.spring.hometask.domain.User;
 import ua.epam.spring.hometask.service.UserService;
 
-/**
- * Created by Aliaksei Miashkou on 04.06.17.
- */
+@Service("userService")
 public class UserServiceImpl implements UserService {
-    private UserDaoImpl userDao;
+
+    @Autowired
+    private UserDao userDao;
 
     @Override
     public User save(@Nonnull final User user) {
@@ -45,11 +49,11 @@ public class UserServiceImpl implements UserService {
         return userDao.isRegistered(user);
     }
 
-    public UserDaoImpl getUserDao() {
+    public UserDao getUserDao() {
         return userDao;
     }
 
-    public void setUserDao(UserDaoImpl userDao) {
+    public void setUserDao(UserDao userDao) {
         this.userDao = userDao;
     }
 }

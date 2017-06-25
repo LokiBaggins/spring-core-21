@@ -7,6 +7,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.util.Map;
 
+import ua.epam.spring.hometask.dao.impl.UserDaoImpl;
 import ua.epam.spring.hometask.domain.User;
 
 import static org.hamcrest.CoreMatchers.is;
