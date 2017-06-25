@@ -9,6 +9,7 @@ import java.util.Set;
 
 import javax.annotation.Nonnull;
 
+import ua.epam.spring.hometask.dao.EventDao;
 import ua.epam.spring.hometask.dao.impl.EventDaoImpl;
 import ua.epam.spring.hometask.domain.Event;
 import ua.epam.spring.hometask.service.EventService;
@@ -17,7 +18,7 @@ import ua.epam.spring.hometask.service.EventService;
 public class EventServiceImpl implements EventService{
 
     @Autowired
-    private EventDaoImpl eventDao;
+    private EventDao eventDao;
 
     @Override
     public Event getByName(@Nonnull final String name) {
@@ -55,11 +56,11 @@ public class EventServiceImpl implements EventService{
         return eventDao.getAll();
     }
 
-    public EventDaoImpl getEventDao() {
+    public EventDao getEventDao() {
         return eventDao;
     }
 
-    public void setEventDao(EventDaoImpl eventDao) {
+    public void setEventDao(EventDao eventDao) {
         this.eventDao = eventDao;
     }
 }

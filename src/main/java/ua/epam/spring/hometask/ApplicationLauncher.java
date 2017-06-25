@@ -1,5 +1,6 @@
 package ua.epam.spring.hometask;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -28,20 +29,34 @@ import ua.epam.spring.hometask.service.UserService;
 
 public class ApplicationLauncher {
     private static Scanner scanner = new Scanner(System.in);
-    UserService userService;
-    BookingService bookingService;
-    EventService eventService;
 
+//    @Autowired private UserService userService;
+//    @Autowired private BookingService bookingService;
+//    @Autowired private EventService eventService;
+    private UserService userService;
+    private BookingService bookingService;
+    private EventService eventService;
 
+    public ApplicationLauncher() {
+    }
+
+    public ApplicationLauncher(UserService userService, BookingService bookingService, EventService eventService) {
+        this.userService = userService;
+        this.eventService = eventService;
+        this.bookingService = bookingService;
+    }
 
     public static void main(String[] args) {
-        ConfigurableApplicationContext contextXML = new ClassPathXmlApplicationContext("service-config.xml");
-        ConfigurableApplicationContext contextAnt = new AnnotationConfigApplicationContext(ApplicationConfig.class);
+        ConfigurableApplicationContext context = new AnnotationConfigApplicationContext(ApplicationConfig.class);
 
+//        ApplicationLauncher launcher = context.getBean(ApplicationLauncher.class);
+        UserService userService = context.getBean(UserService.class);
+        EventService eventService = context.getBean(EventService.class);
+        BookingService bookingService = context.getBean(BookingService.class);
+        ApplicationLauncher launcher = new ApplicationLauncher(userService, bookingService, eventService);
 
-        ApplicationLauncher launcher = contextXML.getBean(ApplicationLauncher.class);
-        launcher.initUserDao(contextAnt);
-        launcher.initEventDao(contextXML);
+        launcher.initUserDao(context);
+        launcher.initEventDao(context);
 
         launcher.run(1, 2, new HashSet<>(Arrays.asList(3L, 5L, 7L)), "some.user@anymail.com");
 

@@ -10,7 +10,6 @@ import javax.annotation.Nonnull;
 
 import ua.epam.spring.hometask.dao.AuditoriumDao;
 import ua.epam.spring.hometask.domain.Auditorium;
-import ua.epam.spring.hometask.service.AuditoriumService;
 
 
 public class AuditoriumDaoImpl implements AuditoriumDao {

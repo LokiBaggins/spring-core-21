@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
+import java.awt.print.Book;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
@@ -26,6 +27,8 @@ import ua.epam.spring.hometask.dao.impl.UserDaoImpl;
 import ua.epam.spring.hometask.domain.Auditorium;
 import ua.epam.spring.hometask.domain.Event;
 import ua.epam.spring.hometask.domain.User;
+import ua.epam.spring.hometask.service.BookingService;
+import ua.epam.spring.hometask.service.impl.BookingServiceImpl;
 
 import static ua.epam.spring.hometask.domain.EventRating.*;
 
@@ -45,13 +48,15 @@ public class ApplicationConfig {
     @Value("${auditorium3.number_of_seats}") Long auditoriumSeats3;
     @Value("#{'${auditorium3.vip_seats}'.split(',')}") Set<Long> vipSeats3;
 
-
     @Bean
     public static PropertySourcesPlaceholderConfigurer propertyConfig() {
         return new PropertySourcesPlaceholderConfigurer();
     }
 
-
+    @Bean
+    public BookingService bookingService() {
+        return new BookingServiceImpl();
+    }
 
     @Bean
     public Event event1() {
