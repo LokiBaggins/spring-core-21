@@ -3,6 +3,7 @@ package ua.epam.spring.hometask.config;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cglib.core.Local;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
@@ -16,6 +17,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import ua.epam.spring.hometask.ApplicationLauncher;
 import ua.epam.spring.hometask.dao.AuditoriumDao;
 import ua.epam.spring.hometask.dao.EventDao;
 import ua.epam.spring.hometask.dao.TicketDao;
@@ -28,13 +30,18 @@ import ua.epam.spring.hometask.domain.Auditorium;
 import ua.epam.spring.hometask.domain.Event;
 import ua.epam.spring.hometask.domain.User;
 import ua.epam.spring.hometask.service.BookingService;
+import ua.epam.spring.hometask.service.EventService;
+import ua.epam.spring.hometask.service.UserService;
 import ua.epam.spring.hometask.service.impl.BookingServiceImpl;
+import ua.epam.spring.hometask.service.impl.EventServiceImpl;
+import ua.epam.spring.hometask.service.impl.UserServiceImpl;
 
 import static ua.epam.spring.hometask.domain.EventRating.*;
 
 
 @Configuration
 @PropertySource("classpath:auditoria.properties")
+@ComponentScan("ua.epam.spring.hometask")
 public class ApplicationConfig {
     private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
@@ -54,9 +61,10 @@ public class ApplicationConfig {
     }
 
     @Bean
-    public BookingService bookingService() {
-        return new BookingServiceImpl();
+    public ApplicationLauncher applicationLauncher() {
+        return new ApplicationLauncher(userService(), bookingService(), eventService());
     }
+
 
     @Bean
     public Event event1() {
@@ -136,4 +144,18 @@ public class ApplicationConfig {
         return new AuditoriumDaoImpl();
     }
 
+    @Bean
+    public BookingService bookingService() {
+        return new BookingServiceImpl();
+    }
+
+    @Bean
+    public UserService userService() {
+        return new UserServiceImpl();
+    }
+
+    @Bean
+    public EventService eventService() {
+        return new EventServiceImpl();
+    }
 }

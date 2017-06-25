@@ -1,10 +1,8 @@
 package ua.epam.spring.hometask;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -18,6 +16,7 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
+import ua.epam.spring.hometask.config.AopConfig;
 import ua.epam.spring.hometask.config.ApplicationConfig;
 import ua.epam.spring.hometask.domain.Auditorium;
 import ua.epam.spring.hometask.domain.Event;
@@ -30,11 +29,11 @@ import ua.epam.spring.hometask.service.UserService;
 public class ApplicationLauncher {
     private static Scanner scanner = new Scanner(System.in);
 
-//    @Autowired private UserService userService;
-//    @Autowired private BookingService bookingService;
-//    @Autowired private EventService eventService;
+    @Autowired
     private UserService userService;
+    @Autowired
     private BookingService bookingService;
+    @Autowired
     private EventService eventService;
 
     public ApplicationLauncher() {
@@ -42,19 +41,20 @@ public class ApplicationLauncher {
 
     public ApplicationLauncher(UserService userService, BookingService bookingService, EventService eventService) {
         this.userService = userService;
-        this.eventService = eventService;
         this.bookingService = bookingService;
+        this.eventService = eventService;
     }
 
+
     public static void main(String[] args) {
-        ConfigurableApplicationContext context = new AnnotationConfigApplicationContext(ApplicationConfig.class);
+        ConfigurableApplicationContext context = new AnnotationConfigApplicationContext(ApplicationConfig.class, AopConfig.class);
 
-//        ApplicationLauncher launcher = context.getBean(ApplicationLauncher.class);
-        UserService userService = context.getBean(UserService.class);
-        EventService eventService = context.getBean(EventService.class);
-        BookingService bookingService = context.getBean(BookingService.class);
-        ApplicationLauncher launcher = new ApplicationLauncher(userService, bookingService, eventService);
+//        UserService userService = context.getBean(UserService.class);
+//        EventService eventService = context.getBean(EventService.class);
+//        BookingService bookingService = context.getBean(BookingService.class);
+//        ApplicationLauncher launcher = new ApplicationLauncher(userService, bookingService, eventService);
 
+        ApplicationLauncher launcher = context.getBean(ApplicationLauncher.class);
         launcher.initUserDao(context);
         launcher.initEventDao(context);
 
@@ -63,31 +63,7 @@ public class ApplicationLauncher {
         scanner.close();
     }
 
-    public UserService getUserService() {
-        return userService;
-    }
-
-    public void setUserService(UserService userService) {
-        this.userService = userService;
-    }
-
-    public BookingService getBookingService() {
-        return bookingService;
-    }
-
-    public void setBookingService(BookingService bookingService) {
-        this.bookingService = bookingService;
-    }
-
-    public EventService getEventService() {
-        return eventService;
-    }
-
-    public void setEventService(EventService eventService) {
-        this.eventService = eventService;
-    }
-
-    private void initUserDao(ConfigurableApplicationContext context ) {
+    private void initUserDao(ConfigurableApplicationContext context) {
         User registeredUser = context.getBean("registeredUser", User.class);
         System.out.println("Saving initial user...");
         userService.save(registeredUser);
@@ -107,7 +83,7 @@ public class ApplicationLauncher {
 
     }
 
-    private void run(Integer eventNumber, Integer airDateNumber, Set<Long> seatsNumbers, String userEmail) {
+    public void run(Integer eventNumber, Integer airDateNumber, Set<Long> seatsNumbers, String userEmail) {
         System.out.println("\nLet's start booking!");
 
         List<Event> upcomingEvents = new ArrayList<>(eventService.getUpcomingEvents(LocalDateTime.now().plusDays(10)));
@@ -134,7 +110,7 @@ public class ApplicationLauncher {
 
         for (int j = 1; j <= airDates.size(); j++) {
             //            TODO: format dateTime
-            System.out.println(j + ". " + airDates.get(j-1));
+            System.out.println(j + ". " + airDates.get(j - 1));
         }
 
         // show available seats
@@ -268,12 +244,6 @@ public class ApplicationLauncher {
 
 
         return input;
-    }
-
-    private User loginUser() {
-
-
-        return null;
     }
 
     private void printSeats(@Nonnull Set<Long> seats, Double seatPrice, boolean isVip) {

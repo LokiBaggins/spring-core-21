@@ -1,6 +1,7 @@
 package ua.epam.spring.hometask.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -14,7 +15,8 @@ import ua.epam.spring.hometask.dao.impl.EventDaoImpl;
 import ua.epam.spring.hometask.domain.Event;
 import ua.epam.spring.hometask.service.EventService;
 
-@Service("eventService")
+//@Service("eventService")
+@Component
 public class EventServiceImpl implements EventService{
 
     @Autowired

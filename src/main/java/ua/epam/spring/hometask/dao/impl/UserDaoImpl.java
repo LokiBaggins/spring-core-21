@@ -1,6 +1,9 @@
 package ua.epam.spring.hometask.dao.impl;
 
+import org.springframework.stereotype.Component;
+
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,16 +14,9 @@ import ua.epam.spring.hometask.dao.UserDao;
 import ua.epam.spring.hometask.domain.User;
 import ua.epam.spring.hometask.service.UserService;
 
-/**
- * Created by Aliaksei Miashkou on 04.06.17.
- */
 public class UserDaoImpl implements UserDao {
-    private static Map<Long, User> registeredUsers;
+    private static Map<Long, User> registeredUsers = Collections.EMPTY_MAP;
     private static Long userIdAutoincrement = 1L;
-
-    public UserDaoImpl() {
-        registeredUsers = new HashMap<>();
-    }
 
     @Override
     public User save(@Nonnull User object) {
