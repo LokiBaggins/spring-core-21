@@ -19,6 +19,17 @@ public class Event extends DomainObject {
     private Double basePrice;
     private EventRating rating;
 
+    public Event() {
+    }
+
+    public Event( String name, Double basePrice, EventRating rating, NavigableSet<LocalDateTime> airDates, NavigableMap<LocalDateTime, Auditorium> auditoriums) {
+        this.airDates = airDates;
+        this.auditoriums = auditoriums;
+        this.name = name;
+        this.basePrice = basePrice;
+        this.rating = rating;
+    }
+
     /**
      * Checks if event is aired on particular <code>dateTime</code> and assigns
      * auditorium to it.

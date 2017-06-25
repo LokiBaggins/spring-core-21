@@ -13,12 +13,16 @@ import java.util.stream.LongStream;
 public class Auditorium extends DomainObject {
 
     private String name;
-
     private long numberOfSeats;
-
     private Set<Long> vipSeats = Collections.emptySet();
 
     public Auditorium() {
+    }
+
+    public Auditorium(String name, long numberOfSeats, Set<Long> vipSeats) {
+        this.name = name;
+        this.numberOfSeats = numberOfSeats;
+        this.vipSeats = vipSeats;
     }
 
     /**

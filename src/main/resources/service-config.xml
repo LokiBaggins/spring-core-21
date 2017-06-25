@@ -16,7 +16,6 @@
 
 
 ">
-    <import resource="classpath:events-context.xml"/>
     <bean class="ua.epam.spring.hometask.config.ApplicationConfig"/>
 
     <context:annotation-config/>
@@ -27,11 +26,6 @@
           p:eventService-ref="eventService"
           p:bookingService-ref="bookingService"
     />
-
-    <util:map id="eventsMap1" key-type="java.lang.Long" value-type="ua.epam.spring.hometask.domain.Event" map-class="java.util.HashMap">
-        <entry key="1" value-ref="event1"/>
-        <entry key="2" value-ref="event2"/>
-    </util:map>
 
 
 </beans>
