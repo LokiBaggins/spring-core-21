@@ -8,14 +8,25 @@ import java.util.TreeSet;
  * @author Yuriy_Tkach
  */
 public class User extends DomainObject {
-
     private String firstName;
-
     private String lastName;
-
     private String email;
+    private NavigableSet<Ticket> tickets;
 
-    private NavigableSet<Ticket> tickets = new TreeSet<>();
+    public User() {
+        this(null, null, null, new TreeSet<>());
+    }
+
+    public User(String firstName, String lastName, String email) {
+       this(firstName, lastName, email, new TreeSet<>());
+    }
+
+    public User(String firstName, String lastName, String email, NavigableSet<Ticket> tickets) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.tickets = tickets;
+    }
 
     public String getFirstName() {
         return firstName;
@@ -66,6 +77,10 @@ public class User extends DomainObject {
             return false;
         }
         User other = (User) obj;
+        if(this.getId() != null && this.getId().equals(((User) obj).getId())) {
+            return true;
+        }
+
         if (email == null) {
             if (other.email != null) {
                 return false;

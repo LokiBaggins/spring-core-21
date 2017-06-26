@@ -13,20 +13,27 @@ import java.util.TreeSet;
  */
 public class Event extends DomainObject {
 
-    private String name;
-
     private NavigableSet<LocalDateTime> airDates = new TreeSet<>();
-
-    private double basePrice;
-
+    private NavigableMap<LocalDateTime, Auditorium> auditoriums = new TreeMap<>();
+    private String name;
+    private Double basePrice;
     private EventRating rating;
 
-    private NavigableMap<LocalDateTime, Auditorium> auditoriums = new TreeMap<>();
+    public Event() {
+    }
+
+    public Event( String name, Double basePrice, EventRating rating, NavigableSet<LocalDateTime> airDates, NavigableMap<LocalDateTime, Auditorium> auditoriums) {
+        this.airDates = airDates;
+        this.auditoriums = auditoriums;
+        this.name = name;
+        this.basePrice = basePrice;
+        this.rating = rating;
+    }
 
     /**
      * Checks if event is aired on particular <code>dateTime</code> and assigns
      * auditorium to it.
-     * 
+     *
      * @param dateTime
      *            Date and time of aired event for which to assign
      * @param auditorium
@@ -38,14 +45,14 @@ public class Event extends DomainObject {
         if (airDates.contains(dateTime)) {
             auditoriums.put(dateTime, auditorium);
             return true;
-        } else {
-            return false;
         }
+
+        return false;
     }
 
     /**
      * Removes auditorium assignment from event
-     * 
+     *
      * @param dateTime
      *            Date and time to remove auditorium for
      * @return <code>true</code> if successful, <code>false</code> if not
@@ -57,7 +64,7 @@ public class Event extends DomainObject {
 
     /**
      * Add date and time of event air
-     * 
+     *
      * @param dateTime
      *            Date and time to add
      * @return <code>true</code> if successful, <code>false</code> if already
@@ -69,7 +76,7 @@ public class Event extends DomainObject {
 
     /**
      * Adding date and time of event air and assigning auditorium to that
-     * 
+     *
      * @param dateTime
      *            Date and time to add
      * @param auditorium
@@ -88,7 +95,7 @@ public class Event extends DomainObject {
     /**
      * Removes the date and time of event air. If auditorium was assigned to
      * that date and time - the assignment is also removed
-     * 
+     *
      * @param dateTime
      *            Date and time to remove
      * @return <code>true</code> if successful, <code>false</code> if not there
@@ -103,7 +110,7 @@ public class Event extends DomainObject {
 
     /**
      * Checks if event airs on particular date and time
-     * 
+     *
      * @param dateTime
      *            Date and time to check
      * @return <code>true</code> event airs on that date and time
@@ -114,7 +121,7 @@ public class Event extends DomainObject {
 
     /**
      * Checks if event airs on particular date
-     * 
+     *
      * @param date
      *            Date to ckeck
      * @return <code>true</code> event airs on that date
@@ -126,7 +133,7 @@ public class Event extends DomainObject {
     /**
      * Checking if event airs on dates between <code>from</code> and
      * <code>to</code> inclusive
-     * 
+     *
      * @param from
      *            Start date to check
      * @param to
@@ -154,11 +161,11 @@ public class Event extends DomainObject {
         this.airDates = airDates;
     }
 
-    public double getBasePrice() {
+    public Double getBasePrice() {
         return basePrice;
     }
 
-    public void setBasePrice(double basePrice) {
+    public void setBasePrice(Double basePrice) {
         this.basePrice = basePrice;
     }
 

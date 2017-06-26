@@ -9,18 +9,21 @@ import java.util.Objects;
 public class Ticket extends DomainObject implements Comparable<Ticket> {
 
     private User user;
-
     private Event event;
-
     private LocalDateTime dateTime;
-
     private long seat;
+    private Double price;
 
     public Ticket(User user, Event event, LocalDateTime dateTime, long seat) {
+        this(user, event, dateTime, seat, null);
+    }
+
+    public Ticket(User user, Event event, LocalDateTime dateTime, long seat, Double price) {
         this.user = user;
         this.event = event;
         this.dateTime = dateTime;
         this.seat = seat;
+        this.price = price;
     }
 
     public User getUser() {
@@ -37,6 +40,14 @@ public class Ticket extends DomainObject implements Comparable<Ticket> {
 
     public long getSeat() {
         return seat;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
     }
 
     @Override
@@ -92,4 +103,8 @@ public class Ticket extends DomainObject implements Comparable<Ticket> {
         return result;
     }
 
+    @Override
+    public String toString() {
+        return "Ticket{ event=" + event.getName() + ", dateTime=" + dateTime + ", seat=" + seat + ", price=" + price + '}';
+    }
 }

@@ -10,14 +10,11 @@ import ua.epam.spring.hometask.domain.Event;
 import ua.epam.spring.hometask.domain.Ticket;
 import ua.epam.spring.hometask.domain.User;
 
-/**
- * @author Yuriy_Tkach
- */
 public interface BookingService {
 
     /**
      * Getting price when buying all supplied seats for particular event
-     * 
+     *
      * @param event
      *            Event to get base ticket price, vip seats and other
      *            information
@@ -30,27 +27,29 @@ public interface BookingService {
      *            Set of seat numbers that user wants to buy
      * @return total price
      */
-    public double getTicketsPrice(@Nonnull Event event, @Nonnull LocalDateTime dateTime, @Nullable User user,
-            @Nonnull Set<Long> seats);
+    Double getTicketsTotalPrice(@Nonnull Event event, @Nonnull LocalDateTime dateTime, @Nonnull Set<Long> seats);
+    Double getTicketPrice(@Nonnull Event event, @Nonnull LocalDateTime dateTime, @Nonnull Long seat);
 
     /**
      * Books tickets in internal system. If user is not
      * <code>null</code> in a ticket then booked tickets are saved with it
-     * 
+     *
      * @param tickets
      *            Set of tickets
      */
-    public void bookTickets(@Nonnull Set<Ticket> tickets);
+    void bookTickets(@Nonnull Set<Ticket> tickets);
 
     /**
      * Getting all purchased tickets for event on specific air date and time
-     * 
+     *
      * @param event
      *            Event to get tickets for
      * @param dateTime
      *            Date and time of airing of event
      * @return set of all purchased tickets
      */
-    public @Nonnull Set<Ticket> getPurchasedTicketsForEvent(@Nonnull Event event, @Nonnull LocalDateTime dateTime);
+    @Nonnull Set<Ticket> getPurchasedTicketsForEvent(@Nonnull Event event, @Nonnull LocalDateTime dateTime);
+
+    Set<Long> getReservedSeatsForEvent(@Nonnull Event event, @Nonnull LocalDateTime dateTime);
 
 }
