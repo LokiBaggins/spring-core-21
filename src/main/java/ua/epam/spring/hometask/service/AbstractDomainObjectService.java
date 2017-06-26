@@ -18,7 +18,7 @@ public interface AbstractDomainObjectService<T extends DomainObject> {
      * Saving new object to storage or updating existing one
      * 
      * @param object
-     *            Object to save
+     *            Object to saveOrUpdate
      * @return saved object with assigned id
      */
     T save(@Nonnull T object);

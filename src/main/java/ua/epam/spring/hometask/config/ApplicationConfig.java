@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
@@ -12,6 +14,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
+
+import javax.annotation.Resource;
 
 import ua.epam.spring.hometask.Application;
 import ua.epam.spring.hometask.dao.AuditoriumDao;
@@ -37,6 +41,7 @@ import static ua.epam.spring.hometask.domain.EventRating.*;
 
 @Configuration
 @PropertySource("classpath:auditoria.properties")
+@ImportResource("classpath:db_config.xml")
 @ComponentScan(
         basePackages = {"ua.epam.spring.hometask"})
 public class ApplicationConfig {

@@ -7,7 +7,7 @@ import java.util.Collection;
 
 public interface EventCounterDao {
 
-    EventCounter save(@Nonnull EventCounter object);
+    EventCounter saveOrUpdate(@Nonnull EventCounter object);
 
     EventCounter getById(@Nonnull Long id);
 

@@ -8,8 +8,10 @@ import org.aspectj.lang.annotation.Aspect;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ua.epam.spring.hometask.aop.dto.EventCounter;
+import ua.epam.spring.hometask.dao.EventCounterDao;
 import ua.epam.spring.hometask.domain.Event;
 import ua.epam.spring.hometask.domain.Ticket;
 
@@ -18,6 +20,9 @@ import ua.epam.spring.hometask.domain.Ticket;
 @Component
 public class CounterAspect {
     private static Map<Long, EventCounter> eventStatistics = new HashMap<>();
+
+    @Autowired
+    EventCounterDao eventCounterDao;
 
     @AfterReturning(pointcut = "execution(* ua.epam.spring.hometask.service.EventService.getByName(..))",
             returning= "result")
@@ -59,9 +64,11 @@ public class CounterAspect {
 
     private EventCounter getCounterForEvent(Event event) {
         if (eventStatistics.keySet().contains(event.getId())) {
+            eventCounterDao.saveOrUpdate(eventStatistics.get(event.getId()));
             return eventStatistics.get(event.getId());
         }
 
+        eventCounterDao.saveOrUpdate(new EventCounter(event.getId(), event.getName()));
         return eventStatistics.put(event.getId(), new EventCounter(event.getId(), event.getName()));
     }
 }
