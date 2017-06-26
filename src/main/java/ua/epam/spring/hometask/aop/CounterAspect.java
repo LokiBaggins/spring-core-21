@@ -7,9 +7,9 @@ import org.aspectj.lang.annotation.Aspect;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 import org.springframework.stereotype.Component;
+import ua.epam.spring.hometask.aop.dto.EventCounter;
 import ua.epam.spring.hometask.domain.Event;
 import ua.epam.spring.hometask.domain.Ticket;
 
@@ -17,8 +17,6 @@ import ua.epam.spring.hometask.domain.Ticket;
 @Aspect
 @Component
 public class CounterAspect {
-    private static final String CONSOLE_TEXT_PREFIX_CYAN = "\u001B[36m";
-    private static final String ANSI_RESET = "\u001B[0m";
     private static Map<Long, EventCounter> eventStatistics = new HashMap<>();
 
     @AfterReturning(pointcut = "execution(* ua.epam.spring.hometask.service.EventService.getByName(..))",
@@ -26,8 +24,8 @@ public class CounterAspect {
     public void countEventByNameCall(Object result) {
         Event event = (Event) result;
 
-        checkForCounterPresense(event);
-        eventStatistics.get(event.getId()).timesCalledByName++;
+        EventCounter counter = getCounterForEvent(event);
+        counter.setTimesCalledByName(counter.getTimesCalledByName() + 1);
     }
 
 //    it's not a mistake. Mapping pointcut to .getTicketsPrice would give incorrect result because of lots of inner service calls
@@ -36,8 +34,8 @@ public class CounterAspect {
     public void countEventPriceQuery(JoinPoint joinPoint) {
         Event event = (Event) joinPoint.getArgs()[0];
 
-        checkForCounterPresense(event);
-        eventStatistics.get(event.getId()).timesPricesQueried++;
+        EventCounter counter = getCounterForEvent(event);
+        counter.setTimesPricesQueried(counter.getTimesPricesQueried() +1);
     }
 
     @After("execution(* ua.epam.spring.hometask.dao.TicketDao.save(..))")
@@ -45,8 +43,8 @@ public class CounterAspect {
         Ticket ticket = (Ticket) joinPoint.getArgs()[0];
         Event event = ticket.getEvent();
 
-        checkForCounterPresense(event);
-        eventStatistics.get(event.getId()).ticketsBooked++;
+        EventCounter counter = getCounterForEvent(event);
+        counter.setTicketsBooked(counter.getTicketsBooked() + 1);
     }
 
     /**
@@ -59,35 +57,11 @@ public class CounterAspect {
         }
     }
 
-    private void checkForCounterPresense(Event event) {
-        if (!eventStatistics.keySet().contains(event.getId())) {
-            addNewCounter(event);
-        }
-    }
-
-    private void addNewCounter(Event event) {
-        eventStatistics.put(event.getId(), new EventCounter(event.getName()));
-    }
-
-    class EventCounter {
-        String eventName;
-        Long timesCalledByName = 0L;
-        Long timesPricesQueried = 0L;
-        Long ticketsBooked = 0L;
-
-        EventCounter(String eventName) {
-            this.eventName = eventName;
+    private EventCounter getCounterForEvent(Event event) {
+        if (eventStatistics.keySet().contains(event.getId())) {
+            return eventStatistics.get(event.getId());
         }
 
-        @Override
-        public String toString() {
-            return CONSOLE_TEXT_PREFIX_CYAN + "EventCounter{" +
-                    "eventName='" + eventName + '\'' +
-                    ", timesCalledByName=" + timesCalledByName +
-                    ", timesPricesQueried=" + timesPricesQueried +
-                    ", ticketsBooked=" + ticketsBooked +
-                    '}' +
-                    ANSI_RESET;
-        }
+        return eventStatistics.put(event.getId(), new EventCounter(event.getId(), event.getName()));
     }
 }
