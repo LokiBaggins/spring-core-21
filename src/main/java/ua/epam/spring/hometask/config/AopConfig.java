@@ -7,7 +7,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import ua.epam.spring.hometask.aop.CounterAspect;
 
 @Configuration
-@EnableAspectJAutoProxy
+@EnableAspectJAutoProxy(proxyTargetClass = true)
 public class AopConfig {
 
     @Bean

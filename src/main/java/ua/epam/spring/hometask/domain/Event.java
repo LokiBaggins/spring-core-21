@@ -33,7 +33,7 @@ public class Event extends DomainObject {
     /**
      * Checks if event is aired on particular <code>dateTime</code> and assigns
      * auditorium to it.
-     * 
+     *
      * @param dateTime
      *            Date and time of aired event for which to assign
      * @param auditorium
@@ -52,7 +52,7 @@ public class Event extends DomainObject {
 
     /**
      * Removes auditorium assignment from event
-     * 
+     *
      * @param dateTime
      *            Date and time to remove auditorium for
      * @return <code>true</code> if successful, <code>false</code> if not
@@ -64,7 +64,7 @@ public class Event extends DomainObject {
 
     /**
      * Add date and time of event air
-     * 
+     *
      * @param dateTime
      *            Date and time to add
      * @return <code>true</code> if successful, <code>false</code> if already
@@ -76,7 +76,7 @@ public class Event extends DomainObject {
 
     /**
      * Adding date and time of event air and assigning auditorium to that
-     * 
+     *
      * @param dateTime
      *            Date and time to add
      * @param auditorium
@@ -95,7 +95,7 @@ public class Event extends DomainObject {
     /**
      * Removes the date and time of event air. If auditorium was assigned to
      * that date and time - the assignment is also removed
-     * 
+     *
      * @param dateTime
      *            Date and time to remove
      * @return <code>true</code> if successful, <code>false</code> if not there
@@ -110,7 +110,7 @@ public class Event extends DomainObject {
 
     /**
      * Checks if event airs on particular date and time
-     * 
+     *
      * @param dateTime
      *            Date and time to check
      * @return <code>true</code> event airs on that date and time
@@ -121,7 +121,7 @@ public class Event extends DomainObject {
 
     /**
      * Checks if event airs on particular date
-     * 
+     *
      * @param date
      *            Date to ckeck
      * @return <code>true</code> event airs on that date
@@ -133,7 +133,7 @@ public class Event extends DomainObject {
     /**
      * Checking if event airs on dates between <code>from</code> and
      * <code>to</code> inclusive
-     * 
+     *
      * @param from
      *            Start date to check
      * @param to

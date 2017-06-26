@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
+import org.springframework.stereotype.Component;
 import ua.epam.spring.hometask.config.AopConfig;
 import ua.epam.spring.hometask.config.ApplicationConfig;
 import ua.epam.spring.hometask.domain.Auditorium;
@@ -26,7 +27,7 @@ import ua.epam.spring.hometask.service.BookingService;
 import ua.epam.spring.hometask.service.EventService;
 import ua.epam.spring.hometask.service.UserService;
 
-public class ApplicationLauncher {
+public class Application {
     private static Scanner scanner = new Scanner(System.in);
 
     @Autowired
@@ -36,41 +37,14 @@ public class ApplicationLauncher {
     @Autowired
     private EventService eventService;
 
-    public ApplicationLauncher() {
-    }
-
-    public ApplicationLauncher(UserService userService, BookingService bookingService, EventService eventService) {
-        this.userService = userService;
-        this.bookingService = bookingService;
-        this.eventService = eventService;
-    }
-
-
-    public static void main(String[] args) {
-        ConfigurableApplicationContext context = new AnnotationConfigApplicationContext(ApplicationConfig.class, AopConfig.class);
-
-//        UserService userService = context.getBean(UserService.class);
-//        EventService eventService = context.getBean(EventService.class);
-//        BookingService bookingService = context.getBean(BookingService.class);
-//        ApplicationLauncher launcher = new ApplicationLauncher(userService, bookingService, eventService);
-
-        ApplicationLauncher launcher = context.getBean(ApplicationLauncher.class);
-        launcher.initUserDao(context);
-        launcher.initEventDao(context);
-
-        launcher.run(1, 2, new HashSet<>(Arrays.asList(3L, 5L, 7L)), "some.user@anymail.com");
-
-        scanner.close();
-    }
-
-    private void initUserDao(ConfigurableApplicationContext context) {
+    public void initUserDao(ConfigurableApplicationContext context) {
         User registeredUser = context.getBean("registeredUser", User.class);
         System.out.println("Saving initial user...");
         userService.save(registeredUser);
         System.out.println(String.format("Initial user '%s %s' saved successfully! Email: %s", registeredUser.getFirstName(), registeredUser.getLastName(), registeredUser.getEmail()));
     }
 
-    private void initEventDao(ConfigurableApplicationContext context) {
+    public void initEventDao(ConfigurableApplicationContext context) {
         System.out.println("\nSaving initial events...");
         Event event1 = context.getBean("event1", Event.class);
         Event event2 = context.getBean("event2", Event.class);
@@ -138,13 +112,13 @@ public class ApplicationLauncher {
 
 //        choose seats
         if (seatsNumbers != null) {
-            System.out.println(String.format("PREDEFINED seta numbers are: %s.", Arrays.toString(seatsNumbers.toArray())));
+            System.out.println(String.format("PREDEFINED sets numbers are: %s.", Arrays.toString(seatsNumbers.toArray())));
         } else {
             seatsNumbers = readInputSeatsNumbers(availableSeats, availableVipSeats);
         }
 
         Double totalCost = bookingService.getTicketsTotalPrice(chosenEvent, chosenAirDate, seatsNumbers);
-        System.out.println(String.format("You have chosen %s seats.\nTotal cost is: %s", new Object[]{seatsNumbers.size(), totalCost}));
+        System.out.println(String.format("\nYou have chosen %s seats.\nTotal cost is: %s", new Object[]{seatsNumbers.size(), totalCost}));
 
 //        logging in
         System.out.println("\nHave a profile?\nEnter email if registered (see init logs) or just skip this step if not:");
@@ -169,7 +143,7 @@ public class ApplicationLauncher {
 //        purchasing tickets
         Set<Ticket> ticketsToBuy = new HashSet<>();
         for (Long seat : seatsNumbers) {
-            ticketsToBuy.add(new Ticket(currentUser, chosenEvent, chosenAirDate, seat));
+            ticketsToBuy.add(new Ticket(currentUser, chosenEvent, chosenAirDate, seat, bookingService.getTicketPrice(chosenEvent, chosenAirDate, seat)));
         }
         bookingService.bookTickets(ticketsToBuy);
 

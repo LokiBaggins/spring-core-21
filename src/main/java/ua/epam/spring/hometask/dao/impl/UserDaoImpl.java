@@ -15,7 +15,7 @@ import ua.epam.spring.hometask.domain.User;
 import ua.epam.spring.hometask.service.UserService;
 
 public class UserDaoImpl implements UserDao {
-    private static Map<Long, User> registeredUsers = Collections.EMPTY_MAP;
+    private static Map<Long, User> registeredUsers = new HashMap();
     private static Long userIdAutoincrement = 1L;
 
     @Override

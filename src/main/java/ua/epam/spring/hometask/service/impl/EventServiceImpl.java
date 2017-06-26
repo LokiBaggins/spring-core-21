@@ -11,7 +11,6 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 
 import ua.epam.spring.hometask.dao.EventDao;
-import ua.epam.spring.hometask.dao.impl.EventDaoImpl;
 import ua.epam.spring.hometask.domain.Event;
 import ua.epam.spring.hometask.service.EventService;
 

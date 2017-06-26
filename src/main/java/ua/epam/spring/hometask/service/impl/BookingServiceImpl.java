@@ -16,7 +16,6 @@ import ua.epam.spring.hometask.domain.Ticket;
 import ua.epam.spring.hometask.service.BookingService;
 import ua.epam.spring.hometask.service.UserService;
 
-//@Service("bookingService")
 @Component
 public class BookingServiceImpl implements BookingService {
     //        TODO: move consts to .properties
@@ -28,11 +27,6 @@ public class BookingServiceImpl implements BookingService {
 
     @Autowired private TicketDao ticketDao;
     @Autowired private UserService userService;
-
-    public BookingServiceImpl() {
-    }
-
-
 
     @Override
     public Double getTicketsTotalPrice(final Event event, final LocalDateTime dateTime, final Set<Long> seats) {

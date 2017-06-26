@@ -1,23 +1,19 @@
 package ua.epam.spring.hometask.config;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cglib.core.Local;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
-import java.awt.print.Book;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-import ua.epam.spring.hometask.ApplicationLauncher;
+import ua.epam.spring.hometask.Application;
 import ua.epam.spring.hometask.dao.AuditoriumDao;
 import ua.epam.spring.hometask.dao.EventDao;
 import ua.epam.spring.hometask.dao.TicketDao;
@@ -41,7 +37,8 @@ import static ua.epam.spring.hometask.domain.EventRating.*;
 
 @Configuration
 @PropertySource("classpath:auditoria.properties")
-@ComponentScan("ua.epam.spring.hometask")
+@ComponentScan(
+        basePackages = {"ua.epam.spring.hometask"})
 public class ApplicationConfig {
     private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
@@ -61,10 +58,9 @@ public class ApplicationConfig {
     }
 
     @Bean
-    public ApplicationLauncher applicationLauncher() {
-        return new ApplicationLauncher(userService(), bookingService(), eventService());
+    public Application applicationLauncher() {
+        return new Application();
     }
-
 
     @Bean
     public Event event1() {
@@ -108,7 +104,7 @@ public class ApplicationConfig {
     public Auditorium hall1() {
         return new Auditorium(auditoriumName1, auditoriumSeats1, vipSeats1);
     }
-    
+
     @Bean
     public Auditorium hall2() {
         return new Auditorium(auditoriumName2, auditoriumSeats2, vipSeats2);
